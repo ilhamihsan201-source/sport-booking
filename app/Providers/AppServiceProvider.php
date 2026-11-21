@@ -20,7 +20,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (app()->environment('production') || request()->server('HTTP_X_FORWARDED_PROTO') === 'https') {
+        if (
+            app()->environment('production') ||
+            str_contains(request()->getHost(), 'railway.app') ||
+            request()->header('x-forwarded-proto') === 'https' ||
+            request()->server('HTTP_X_FORWARDED_PROTO') === 'https'
+        ) {
             URL::forceScheme('https');
         }
     }
