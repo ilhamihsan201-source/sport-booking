@@ -77,10 +77,15 @@
 
                 {{-- Primary Photo --}}
                 @php
+                    $isSoccer = ($court->sport?->slug === 'mini-soccer') || str_contains(strtolower($court->name ?? ''), 'soccer') || str_contains(strtolower($court->name ?? ''), 'futsal');
+                    $fallbackImage = $isSoccer
+                        ? 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1200&auto=format&fit=crop&q=80'
+                        : 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=1200&auto=format&fit=crop&q=80';
+
                     $primaryImage = $court->images?->firstWhere('is_primary', true) ?? $court->images?->first();
                     $imageUrl = $primaryImage
                         ? asset('storage/' . $primaryImage->image_path)
-                        : 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=1200';
+                        : $fallbackImage;
                 @endphp
 
                 <div class="relative overflow-hidden rounded-3xl bg-slate-100 shadow-md">
@@ -88,7 +93,7 @@
                         id="main-court-photo"
                         src="{{ $imageUrl }}"
                         alt="{{ $primaryImage?->alt_text ?? $court->name }}"
-                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=1200';"
+                        onerror="this.onerror=null; this.src='{{ $fallbackImage }}';"
                         class="h-[360px] sm:h-[440px] w-full object-cover transition duration-300"
                     >
                     <div class="absolute top-4 left-4 flex gap-2">

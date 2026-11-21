@@ -227,12 +227,17 @@
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             @forelse ($courts as $court)
                 @php
+                    $isSoccer = ($court->sport?->slug === 'mini-soccer') || str_contains(strtolower($court->name ?? ''), 'soccer') || str_contains(strtolower($court->name ?? ''), 'futsal');
+                    $fallbackImage = $isSoccer
+                        ? 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1200&auto=format&fit=crop&q=80'
+                        : 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=1200&auto=format&fit=crop&q=80';
+
                     $primaryImage = $court->images->firstWhere('is_primary', true)
                         ?? $court->images->first();
 
                     $imageUrl = $primaryImage
                         ? asset('storage/' . $primaryImage->image_path)
-                        : 'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=1000';
+                        : $fallbackImage;
                 @endphp
 
                 <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
@@ -240,7 +245,7 @@
                         <img
                             src="{{ $imageUrl }}"
                             alt="{{ $primaryImage?->alt_text ?? $court->name }}"
-                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=1000';"
+                            onerror="this.onerror=null; this.src='{{ $fallbackImage }}';"
                             class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                         >
 
