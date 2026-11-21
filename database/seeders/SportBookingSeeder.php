@@ -162,5 +162,25 @@ class SportBookingSeeder extends Seeder
                 ]
             );
         }
+        // AKUN DEMO ADMINISTRATOR & CUSTOMER
+        \App\Models\User::firstOrCreate(
+            ['email' => 'admin@sportbooking.test'],
+            [
+                'name' => 'Administrator',
+                'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+                'role' => 'admin',
+                'email_verified_at' => now(),
+            ]
+        );
+
+        \App\Models\User::firstOrCreate(
+            ['email' => 'customer@sportbooking.test'],
+            [
+                'name' => 'Customer Demo',
+                'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+                'role' => 'customer',
+                'email_verified_at' => now(),
+            ]
+        );
     }
 }
