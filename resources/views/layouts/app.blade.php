@@ -15,7 +15,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (file_exists(public_path('hot')))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        @php
+            $manifestPath = public_path('build/manifest.json');
+            $manifest = file_exists($manifestPath) ? json_decode(file_get_contents($manifestPath), true) : [];
+            $cssFile = $manifest['resources/css/app.css']['file'] ?? 'assets/app-OVhrBFS3.css';
+            $jsFile = $manifest['resources/js/app.js']['file'] ?? 'assets/app-CQsktF47.js';
+        @endphp
+        <link rel="stylesheet" href="/build/{{ $cssFile }}">
+        <script type="module" src="/build/{{ $jsFile }}"></script>
+    @endif
     @stack('styles')
 </head>
 <body class="min-h-screen font-sans text-slate-900 antialiased bg-[#f8fafc]">
