@@ -1,0 +1,17 @@
+{
+  "name": "playwright-qa",
+  "version": "1.0.0",
+  "description": "SportBooking Indonesia - Automated QA Test Suite menggunakan Playwright",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:report": "npx playwright show-report",
+    "test:ui": "npx playwright test --ui"
+  },
+  "keywords": ["qa", "automation", "playwright", "sportbooking"],
+  "author": "SportBooking QA Team",
+  "license": "ISC",
+  "dependencies": {
+    "@playwright/test": "^1.52.0"
+  }
+}
